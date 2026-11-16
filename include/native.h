@@ -12,10 +12,14 @@
 #include <math.h>
 #include <sys/time.h>
 
+using std::min;
+using std::max;
+
 #define DEVICE_NAME "testing"
 #define RADIO_SX128X 1
 
 typedef uint8_t byte;
+typedef bool boolean;
 
 #define HEX 16
 #define DEC 10
@@ -35,6 +39,8 @@ public:
     // Print methods
     virtual size_t write(uint8_t c) = 0;
     virtual size_t write(const uint8_t *s, size_t l) = 0;
+
+    virtual size_t readBytes(uint8_t *buffer, size_t length) { return 0; }
 
     int print(const char *s) {return 0;}
     int print(uint8_t s) {return 0;}
@@ -92,6 +98,11 @@ inline void delayMicroseconds(int delay) { }
 inline char *itoa(int32_t value, char *str, int base) { sprintf(str, "%d", value); return str; }
 inline char *utoa(uint32_t value, char *str, int base) { sprintf(str, "%u", value); return str; }
 #define constrain(amt,low,high) ((amt)<(low)?(low):((amt)>(high)?(high):(amt)))
+
+inline long map(long x, long in_min, long in_max, long out_min, long out_max)
+{
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 
 #ifdef _WIN32
 #define random rand
